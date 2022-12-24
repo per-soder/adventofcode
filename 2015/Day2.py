@@ -24,7 +24,6 @@
 
 # How many total feet of ribbon should they order?
 
-
 input_list = []
 total_sq_feet = 0
 total_feet_ribbon = 0
