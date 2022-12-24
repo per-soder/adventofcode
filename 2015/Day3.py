@@ -17,8 +17,9 @@
 # Input text file made into list of characters
 input_list = []
 
-for directions in open('input/Day3.txt'):
-    input_list = [char for char in directions]
+with open('input/Day3.txt') as input_file:
+    for directions in input_file:
+        input_list = [char for char in directions]
 
 # Storing result
 houses_visited = 1
@@ -28,7 +29,7 @@ northward = 0
 eastward = 0
 
 # Store all positions for comparing
-locations_list = []
+locations_list = [[0, 0]]
 
 for direction in input_list:
     if direction == '^':
@@ -70,48 +71,50 @@ print(f'{houses_visited} houses received at least one present.')
 # Storing result
 houses_visited_second_year = 1
 
-# Record Santas or Robo-Santa current position
-s_northward = 0
-s_eastward = 0
+# Record Santas and Robo-Santa current positions
+santa_position = {
+    "north": 0,
+    "east": 0
+}
 
-rs_northward = 0
-rs_eastward = 0
+robot_santa_position = {
+    "north": 0,
+    "east": 0
+}
 
 # Store all positions for comparing
-combined_locations_list = []
+combined_locations_list = [[0, 0]]
 
+# Decide which moves are to be made
 for index, direction in enumerate(input_list):
     if direction == '^':
         if index % 2 == 0:
-            rs_northward += 1
+            robot_santa_position["north"] += 1
         else:
-            s_northward += 1
+            santa_position["north"] += 1
     elif direction == 'v':
         if index % 2 == 0:
-            rs_northward -= 1
+            robot_santa_position["north"] -= 1
         else:
-            s_northward -= 1
+            santa_position["north"] -= 1
     elif direction == '>':
         if index % 2 == 0:
-            rs_eastward += 1
+            robot_santa_position["east"] += 1
         else:
-            s_eastward += 1
+            santa_position["east"] += 1
     elif direction == '<':
         if index % 2 == 0:
-            rs_eastward -= 1
+            robot_santa_position["east"] -= 1
         else:
-            s_eastward -= 1
+            santa_position["east"] -= 1
     else:
         None
 
-    if index % 2 == 0:
-        current_position = [rs_northward, rs_eastward]
-    else:
-        current_position = [rs_northward, rs_eastward]
-
     # Check if position has already been visited, add to houses_visited if it hasn't
-    if current_position not in combined_locations_list:
-        combined_locations_list.append(current_position)
-        houses_visited += 1
+    current_position_second_year = [robot_santa_position["north"], robot_santa_position["east"]] if index % 2 == 0 else [santa_position["north"], santa_position["east"]]
 
-print(f'{houses_visited} houses received at least one present on the next year.')
+    if current_position_second_year not in combined_locations_list:
+        combined_locations_list.append(current_position_second_year)
+        houses_visited_second_year += 1
+
+print(f'{houses_visited_second_year} houses received at least one present on the next year.')
